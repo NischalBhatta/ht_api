@@ -1,12 +1,22 @@
 #Habit Tracker API
 
-@baseUrl = http://localhost:8000
+@baseURL = http://localhost:8000/api/v1/habits
 
 ##POST REQUEST
 
+POST {{baseURL}}
+Content-Type: application/json
 
-##POST REQUEST
 
-##POST REQUEST
+{
+    "name": "Drink Water",
+    "color": "#ffff",
+    "isArchived": false
+}
 
-##POST REQUEST
+
+##GET REQUEST
+
+##PATCH REQUEST
+
+##DELETE REQUEST

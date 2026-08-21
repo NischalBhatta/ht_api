@@ -1,12 +1,21 @@
 import express from "express";
+import { connectMongoDB } from "./src/config/dbConfig.js";
+// import cors from "cors";
 
 const app = express();
 
 const PORT = 8000;
+connectMongoDB();
 
-import taskRouters from "./src/routers/taskRouters.js";
+import habitRouters from "./src/routers/habitRouters.js";
+import completionRouters from "./src/routers/completionRouters.js";
 
-app.use("/", (taskRouters) => {
+app.use(express.json());
+
+app.use("/api/v1/habits", habitRouters);
+app.use("/api/v1/habits", completionRouters);
+
+app.use("/", (req, res) => {
   res.json({
     status: "success",
     message: "Do It",
