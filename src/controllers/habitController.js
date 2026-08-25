@@ -10,3 +10,6 @@ export const getHabit = () => {
 export const updateHabit = (_id, rest) => {
   return habitCollection.findByIdAndUpdate(_id, rest, { new: true });
 };
+export const deleteHabit = (_id) => {
+  return habitCollection.findByIdAndDelete(_id);
+};

@@ -8,7 +8,7 @@ POST {{baseURL}}
 Content-Type: application/json
 
 {
-  "name": "DRINK MILK",
+  "name": "RUN",
   "color": "#ffff",
   "isArchived": false
 }
@@ -24,9 +24,14 @@ Content-Type: application/json
 
 {
   "_id":"6a8d29386743a818f6572c8a",
-  "isArchived": true
+  "isArchived": false
 }
 
 
 ### DELETE REQUEST
-DELETE {{baseURL}}/ID_HERE
+DELETE {{baseURL}}
+Content-Type: application/json
+
+{
+  "_id": "6a8d3a6322c6c8ccc9c57650"
+}
