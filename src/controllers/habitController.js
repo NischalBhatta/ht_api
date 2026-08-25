@@ -4,6 +4,9 @@ export const insertHabit = (taskObj) => {
   const newTask = new habitCollection(taskObj);
   return newTask.save();
 };
-export const getHabit = (taskObj) => {
+export const getHabit = () => {
   return habitCollection.find();
+};
+export const updateHabit = (_id, rest) => {
+  return habitCollection.findByIdAndUpdate(_id, rest, { new: true });
 };

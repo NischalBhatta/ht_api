@@ -13,14 +13,14 @@ import completionRouters from "./src/routers/completionRouters.js";
 app.use(express.json());
 
 app.use("/api/v1/habits", habitRouters);
-app.use("/api/v1/habits", completionRouters);
+app.use("/api/v1/completions", completionRouters);
 
-app.use("/", (req, res) => {
-  res.json({
-    status: "success",
-    message: "Do It",
-  });
-});
+// app.use("/", (req, res) => {
+//   res.json({
+//     status: "success",
+//     message: "Do It",
+//   });
+// });
 
 app.listen(PORT, (error) => {
   error

@@ -1,26 +1,32 @@
-#Habit Tracker API
+# Habit Tracker API
 
 @baseURL = http://localhost:8000/api/v1/habits
 
-##POST REQUEST
+
+### POST REQUEST
 POST {{baseURL}}
 Content-Type: application/json
 
-
 {
-    "name": "Drink Water",
-    "color": "#ffff",
-    "isArchived": false
+  "name": "DRINK MILK",
+  "color": "#ffff",
+  "isArchived": false
 }
 
 
-##GET REQUEST
-
-
+### GET Request
 GET {{baseURL}}
 
 
+### PATCH REQUEST
+PATCH {{baseURL}}
+Content-Type: application/json
 
-##PATCH REQUEST
+{
+  "_id":"6a8d29386743a818f6572c8a",
+  "isArchived": true
+}
 
-##DELETE REQUEST
+
+### DELETE REQUEST
+DELETE {{baseURL}}/ID_HERE
