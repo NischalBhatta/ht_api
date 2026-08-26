@@ -2,13 +2,15 @@
 
 @baseURL = http://localhost:8000/api/v1/habits
 
+@compURL = http://localhost:8000/api/v1/completions
+
 
 ### POST REQUEST
 POST {{baseURL}}
 Content-Type: application/json
 
 {
-  "name": "RUN",
+  "name": "WALK",
   "color": "#ffff",
   "isArchived": false
 }
@@ -23,8 +25,8 @@ PATCH {{baseURL}}
 Content-Type: application/json
 
 {
-  "_id":"6a8d29386743a818f6572c8a",
-  "isArchived": false
+  "_id":"6a8e5f1ec95faa9b50133e11",
+  "isArchived": true
 }
 
 
@@ -34,4 +36,14 @@ Content-Type: application/json
 
 {
   "_id": "6a8d3a6322c6c8ccc9c57650"
+}
+
+
+### POST COMPLETION REQUEST
+POST {{compURL}}
+Content-Type: application/json
+
+{
+  "habitId": "6a8e5f1ec95faa9b50133e11",
+  "completedOn": "2026-08-27T03:35:58.516Z"
 }

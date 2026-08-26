@@ -13,7 +13,7 @@ const completionSchema = new mongoose.Schema({
   },
 });
 
-export const completionCollections = mongoose.model(
-  "Completion",
+export const completionCollection = mongoose.model(
+  "Completions",
   completionSchema,
 );
