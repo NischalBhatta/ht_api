@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const response = await getHabit();
+    console.log(response);
 
     res.json({
       status: "success",
