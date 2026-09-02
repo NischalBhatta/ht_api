@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { connectMongoDB } from "./src/config/dbConfig.js";
 // import cors from "cors";
 
@@ -11,6 +12,7 @@ import habitRouters from "./src/routers/habitRouters.js";
 import completionRouters from "./src/routers/completionRouters.js";
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/v1/habits", habitRouters);
 app.use("/api/v1/completions", completionRouters);

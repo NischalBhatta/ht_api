@@ -1,9 +1,20 @@
 import { completionCollection } from "../models/completionSchema.js";
 import { habitCollection } from "../models/habitSchema.js";
 
-export const insertCompletion = (taskObj) => {
-  const newTask = new completionCollection(taskObj);
-  return newTask.save();
+export const insertCompletion = async (taskObj) => {
+  try {
+    const existCompletion = await completionCollection.findOne({
+      habitId: taskObj.habitId,
+      completedOn: taskObj.completedOn,
+    });
+    if (existCompletion) {
+      return existCompletion;
+    }
+    const newCompletion = await completionCollection(taskObj);
+    return newCompletion;
+  } catch (error) {
+    throw new Error("Completion not recorder");
+  }
 };
 
 export const getCompletions = async (habitId) => {

@@ -44,8 +44,8 @@ POST {{compURL}}
 Content-Type: application/json
 
 {
-  "habitId": "6a8e5f1ec95faa9b50133e11",
-  "completedOn": "2026-08-05T03:35:58.516Z"
+  "habitId": "6a87eff36d546bfd3edca7e2",
+  "completedOn": "2026-08-12T03:35:58.516Z"
 }
 
 ###Get Completion Request
