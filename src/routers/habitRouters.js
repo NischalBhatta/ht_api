@@ -64,6 +64,7 @@ router.patch("/", async (req, res) => {
 
 router.delete("/", async (req, res) => {
   try {
+    console.log(req.body);
     const id = req.body;
     const response = await deleteHabit(id);
     res.json({
