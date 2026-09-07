@@ -64,13 +64,23 @@ router.patch("/", async (req, res) => {
 
 router.delete("/", async (req, res) => {
   try {
-    console.log(req.body);
-    const id = req.body;
-    const response = await deleteHabit(id);
+    console.log("DELETE BODY:", req.body);
+
+    const { _id } = req.body;
+
+    if (!_id) {
+      return res.json({
+        status: "error",
+        message: "No _id provided in request body",
+      });
+    }
+
+    const response = await deleteHabit(_id);
+
     res.json({
       status: "success",
-      message: "Delete habit",
-      data: req.body,
+      message: "Habit deleted",
+      data: response,
     });
   } catch (error) {
     res.json({

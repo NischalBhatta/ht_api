@@ -32,14 +32,22 @@ export const getCompletions = async (habitId) => {
 
 export const deleteCompletion = async (id) => {
   try {
-    const deletedCompletion = await completionCollection.findByIdAndDelete(id);
-
-    if (!deletedCompletion) {
-      throw new Error("Completion not found");
+    const today = new Date().toISOString().split("T")[0];
+    const start = new Date(`${today}T00:00:00.000Z`);
+    const end = new Date(`${today}T23:59:59.999Z`);
+    const deleted = await completionCollection.findOneAndUpdate({
+      habitId,
+      $expr: {
+        $eq: [
+          { $dateToString: { format: "%Y-%m-%d", date: "$completedOn" } },
+          today,
+        ],
+      },
+    });
+    if (!deleted) {
+      throw new Error("No completion found for today");
     }
-
-    return deletedCompletion;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error("Error deleting today's completion");
   }
 };
