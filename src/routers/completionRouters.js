@@ -9,13 +9,12 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    console.log(req.body);
     const response = await insertCompletion(req.body);
 
     res.json({
       status: "success",
       message: "Completion route working",
-      data: req.body,
+      data: response,
     });
   } catch (error) {
     res.json({

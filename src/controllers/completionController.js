@@ -3,17 +3,27 @@ import { habitCollection } from "../models/habitSchema.js";
 
 export const insertCompletion = async (taskObj) => {
   try {
+    const today = new Date(taskObj.completedOn);
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+    // Check if completion exists for this habit today
     const existCompletion = await completionCollection.findOne({
       habitId: taskObj.habitId,
-      completedOn: taskObj.completedOn,
+      completedOn: { $gte: startOfDay, $lte: endOfDay },
     });
+
     if (existCompletion) {
-      return existCompletion;
+      // Delete it (toggle OFF)
+      await completionCollection.deleteOne({ _id: existCompletion._id });
+      return { deleted: true };
     }
-    const newCompletion = await completionCollection(taskObj);
-    return newCompletion;
+
+    // Create new completion (toggle ON)
+    const newCompletion = await completionCollection.create(taskObj);
+    return { created: true, data: newCompletion };
   } catch (error) {
-    throw new Error("Completion not recorder");
+    throw new Error("Completion not recorded");
   }
 };
 
@@ -35,7 +45,7 @@ export const deleteCompletion = async (id) => {
     const today = new Date().toISOString().split("T")[0];
     const start = new Date(`${today}T00:00:00.000Z`);
     const end = new Date(`${today}T23:59:59.999Z`);
-    const deleted = await completionCollection.findOneAndUpdate({
+    const deleted = await completionCollection.findOneAndDelete({
       habitId,
       $expr: {
         $eq: [
