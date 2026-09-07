@@ -41,22 +41,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
-  console.log("DELETE BODY:", req.body);
-
+router.delete("/:id", async (req, res) => {
   try {
-    const { habitId } = req.body;
-
-    if (!habitId) {
-      throw new Error("No _id provided in request body");
-    }
-
-    const response = await deleteCompletion(habitId);
+    const deleted = await deleteCompletion(req.params.id);
 
     res.json({
       status: "success",
       message: "Completion deleted",
-      deleted: response,
+      data: deleted,
     });
   } catch (error) {
     res.json({
