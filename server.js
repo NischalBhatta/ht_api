@@ -2,20 +2,23 @@ import dns from "dns";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import express from "express";
-import cors from "cors";
-import { connectMongoDB } from "./src/config/dbConfig.js";
-// import cors from "cors";
-
 const app = express();
+const PORT = process.env.PORT || 8000;
+import morgan from "morgan";
+import cors from "cors";
+
+import { connectMongoDB } from "./src/config/dbConfig.js";
+
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 
-const PORT = 8000;
 connectMongoDB();
 
 //Static serving
 import path from "path";
 const __dirname = path.resolve();
+console.log(__dirname);
 
 //Serve static files
 app.use(express.static(path.join(__dirname, "dist")));
