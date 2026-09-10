@@ -1,356 +1,386 @@
-# Habit Tracker — Backend API
+# 🟩 Habit Tracker — Full Stack Application
 
-A RESTful API for the Habit Tracker application. Built with Node.js, Express, and MongoDB. Handles habit management, daily completion tracking, and 90-day history queries for the heatmap.
+> A full-stack habit tracking application inspired by GitHub's contribution heatmap.
 
----
+Track daily habits, visualise your consistency over the last 90 days, and build routines that stick.
 
-## 🛠️ Tech Stack
+## 🚀 Live Project
 
-| Layer | Technology |
-|---|---|
-| Runtime | Node.js |
-| Framework | Express |
-| Database | MongoDB + Mongoose |
-| DB Hosting | MongoDB Atlas |
-| Logging | Morgan |
-| Environment | dotenv |
+🌐 **Live Application:** [ADD YOUR RENDER LINK]
+
+🎨 **Frontend Repository:** [ADD YOUR FRONTEND GITHUB LINK]
+
+🖥️ **Backend Repository:** You are here
 
 ---
 
-## 📁 Folder Structure
+## 📸 Preview
 
+Add a screenshot of your application here:
+
+![Habit Tracker Preview](./HabitTracker.png)
+
+---
+
+## 📌 About the Project
+
+I built this project as a full-stack portfolio project and as a practical application for tracking daily habits.
+
+The idea came from GitHub's contribution heatmap. I wanted to apply the same concept to everyday habits, where each square represents whether a habit was completed on a particular day.
+
+The application allows users to create habits, mark them as completed, archive them, and view their consistency through a 90-day heatmap.
+
+The project is developed across two separate repositories:
+
+- **Frontend:** React + Vite
+- **Backend:** Node.js + Express + MongoDB
+
+For production, the React application is built into a static `dist` folder and served directly by the Express backend as part of a single deployed service.
+
+---
+
+## 🏗️ Project Architecture
+
+```text
+                         User
+                           │
+                           ▼
+                    React Frontend
+                     (Vite Build)
+                           │
+                    /api/v1 requests
+                           │
+                           ▼
+                    Express Backend
+                           │
+                ┌──────────┴──────────┐
+                ▼                     ▼
+          Habit Routes         Completion Routes
+                │                     │
+                ▼                     ▼
+           Controllers          Controllers
+                │                     │
+                └──────────┬──────────┘
+                           ▼
+                    MongoDB / Mongoose
+                           │
+                           ▼
+                      MongoDB Atlas
 ```
-server/
+
+### Repository Relationship
+
+The frontend and backend are maintained in separate repositories:
+
+- 🎨 **Frontend:** [https://github.com/NischalBhatta/ht_client]
+- 🖥️ **Backend:** [https://github.com/NischalBhatta/ht_api]
+
+For production deployment:
+
+```text
+Frontend Repository
+        │
+        ▼
+npm run build
+        │
+        ▼
+React dist/
+        │
+        ▼
+Copied into Backend
+        │
+        ▼
+Express serves React + API
+        │
+        ▼
+Render
+```
+
+This allows the frontend and backend to remain independently organised during development while being deployed together as a single application.
+
+---
+
+# ✨ Features
+
+- ✅ Create new habits
+- 🎨 Choose a custom colour for each habit
+- ☑️ Mark habits as completed
+- 🟩 Visualise completion history using a 90-day heatmap
+- 📦 Archive habits without deleting them
+- 🗑️ Delete habits
+- 🗄️ Store habit and completion data in MongoDB Atlas
+- 📱 Responsive desktop and mobile interface
+
+---
+
+# 🛠️ Tech Stack
+
+| Layer            | Technology             |
+| ---------------- | ---------------------- |
+| Frontend         | React + Vite           |
+| Styling          | Bootstrap + Custom CSS |
+| HTTP Client      | Axios                  |
+| Backend          | Node.js + Express      |
+| Database         | MongoDB                |
+| ODM              | Mongoose               |
+| Database Hosting | MongoDB Atlas          |
+| Deployment       | Render                 |
+
+---
+
+# 📁 Backend Project Structure
+
+```text
+ht_api/
+│
 ├── src/
 │   ├── config/
-│   │   └── dbConfig.js           MongoDB connection function
-│   ├── models/
-│   │   ├── habitSchema.js        Habit schema and model
-│   │   └── completionSchema.js   Completion schema and model
+│   │   └── dbConfig.js
+│   │
 │   ├── controllers/
-│   │   ├── habitController.js    Habit database query functions
-│   │   └── completionController.js  Completion database query functions
+│   │   ├── habitController.js
+│   │   └── completionController.js
+│   │
+│   ├── models/
+│   │   ├── habitSchema.js
+│   │   └── completionSchema.js
+│   │
 │   └── routers/
-│       ├── habitRoutes.js        Habit route declarations
-│       └── completionRoutes.js   Completion route declarations
-├── .env
+│       ├── habitRouters.js
+│       └── completionRouters.js
+│
+├── dist/                 # Production React build
+├── server.js             # Express entry point
 ├── package.json
-└── server.js                     Entry point
+└── .env                  # Not committed to GitHub
 ```
 
 ---
 
-## ⚙️ Getting Started
+# 🗄️ Data Model
 
-### 1. Navigate to the server folder
+## Habit
 
-```bash
-cd habit-tracker/server
+```js
+{
+  _id: ObjectId,
+  name: String,
+  color: String,
+  isArchived: Boolean,
+  createdAt: Date,
+  updatedAt: Date
+}
 ```
 
-### 2. Install dependencies
+## Completion
 
-```bash
-npm install
+```js
+{
+  _id: ObjectId,
+  habitId: ObjectId,
+  completedOn: Date
+}
 ```
 
-### 3. Create your .env file
+Each completion is linked to a specific habit through `habitId`.
+
+This means completion history can be queried and displayed separately for each habit.
+
+```text
+Habit
+  │
+  ├── habitId → Completion
+  ├── habitId → Completion
+  └── habitId → Completion
+```
+
+---
+
+# 🔌 API Overview
+
+Base URL:
+
+```text
+/api/v1
+```
+
+## Habit API
+
+| Method | Endpoint  | Purpose        |
+| ------ | --------- | -------------- |
+| GET    | `/habits` | Get all habits |
+| POST   | `/habits` | Create a habit |
+| PATCH  | `/habits` | Update a habit |
+| DELETE | `/habits` | Delete a habit |
+
+## Completion API
+
+| Method | Endpoint       | Purpose                    |
+| ------ | -------------- | -------------------------- |
+| GET    | `/completions` | Get completion records     |
+| POST   | `/completions` | Add a completion record    |
+| DELETE | `/completions` | Remove a completion record |
+
+> API endpoints should be kept in sync with the current Express router implementation.
+
+---
+
+# 💻 Run Locally
+
+## 1. Clone the Backend
+
+```bash
+git clone [YOUR BACKEND REPOSITORY URL]
+cd ht_api
+```
+
+## 2. Install Dependencies
+
+```bash
+yarn
+```
+
+## 3. Create Environment Variables
+
+Create a `.env` file:
 
 ```env
+MONGO_URL=your_mongodb_connection_string
 PORT=8000
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/habit-tracker
 ```
 
-### 4. Run the development server
+Never commit your real `.env` file to GitHub.
+
+## 4. Start the Development Server
 
 ```bash
-npm run dev
+yarn dev
 ```
 
-The API will be available at `http://localhost:8000`
+The backend will run locally on:
 
-### 5. Confirm it is running
-
-Visit `http://localhost:8000` in your browser. You should see:
-
-```json
-{
-  "status": "success",
-  "message": "Habit Tracker API is running"
-}
+```text
+http://localhost:8000
 ```
 
 ---
 
-## 📦 Dependencies
+# 🎨 Run the Frontend
 
-```json
-{
-  "express": "^4.x",
-  "mongoose": "^8.x",
-  "dotenv": "^16.x",
-  "cors": "^2.x",
-  "morgan": "^1.x"
-}
+The frontend is maintained separately.
+
+Clone it from:
+
+👉 [ADD FRONTEND REPOSITORY LINK]
+
+Then:
+
+```bash
+yarn
+yarn dev
 ```
 
-Make sure `"type": "module"` is set in your `package.json` to use ES module imports.
+The frontend development server will connect to the local backend API.
 
 ---
 
-## 🗄️ Data Models
+# 🚀 Production Deployment
 
-### Habit
+The application is deployed as a single service.
+
+The deployment flow is:
+
+```text
+React Source Code
+      │
+      ▼
+Vite Production Build
+      │
+      ▼
+dist Folder
+      │
+      ▼
+Express Static Middleware
+      │
+      ▼
+Render Web Service
+```
+
+The Express server handles API requests under:
+
+```text
+/api/v1/*
+```
+
+and serves the React application for the frontend.
+
+This means the browser can use relative API paths in production:
 
 ```js
-{
-  _id:        ObjectId,       // auto-generated by MongoDB
-  name:       String,         // required
-  color:      String,         // default: "#3498db"
-  isArchived: Boolean,        // default: false — soft delete
-  createdAt:  Date,           // auto — timestamps: true
-  updatedAt:  Date            // auto — timestamps: true
-}
+/api/v1/habits
+/api/v1/completions
 ```
 
-### Completion
-
-```js
-{
-  _id:         ObjectId,      // auto-generated
-  habitId:     ObjectId,      // ref: "Habits" — links to a Habit document
-  completedOn: Date           // stored as midnight UTC e.g. 2026-08-20T00:00:00.000Z
-}
-```
-
-**Unique index on `{ habitId, completedOn }`** — prevents a habit from being marked complete twice on the same day at the database level.
-
-**Why two separate collections:**
-A Habit is created once and lives indefinitely. A Completion is created once per day per habit and accumulates over time. Keeping them separate means you can query completion history by date range independently without loading the entire habit document.
+while development can use the local backend.
 
 ---
 
-## 🔌 API Reference
+# 🤝 Contributing
 
-Base URL: `http://localhost:8000/api/v1`
+Contributions, suggestions, and improvements are welcome.
+
+If you would like to contribute:
+
+1. Fork the appropriate repository.
+2. Create a feature branch:
+
+```bash
+git checkout -b feat/your-feature-name
+```
+
+3. Make your changes.
+4. Test the application locally.
+5. Commit your changes:
+
+```bash
+git commit -m "feat: describe your feature"
+```
+
+6. Push your branch.
+7. Open a Pull Request.
+
+For frontend changes, please use the frontend repository.
+
+For API, database, or server changes, please use this backend repository.
+
+If your feature affects both repositories, mention the related Pull Request in the description.
 
 ---
 
-### Habit Routes
+# 🔮 Future Improvements
 
-#### GET /habits
-Returns all non-archived habits.
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit list",
-  "data": [
-    {
-      "_id": "6a995262e0998a436c32c4b2",
-      "name": "Drink 2L of water",
-      "color": "#3498db",
-      "isArchived": false,
-      "createdAt": "2026-08-01T00:00:00.000Z",
-      "updatedAt": "2026-08-01T00:00:00.000Z"
-    }
-  ]
-}
-```
+- 🔐 JWT authentication and user accounts
+- 👤 Multi-user habit tracking
+- 🔥 Habit streak counters
+- 📊 Weekly and monthly analytics
+- 📈 Completion rate statistics
+- 🔔 Habit reminders and notifications
+- ↕️ Drag-and-drop habit ordering
+- 📅 Additional date ranges for habit history
 
 ---
 
-#### POST /habits
-Creates a new habit.
+# 👨‍💻 Author
 
-**Request body:**
-```json
-{
-  "name": "Drink 2L of water",
-  "color": "#3498db"
-}
-```
+**Nischal Bhatta**
 
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit created",
-  "data": {
-    "_id": "6a995262e0998a436c32c4b2",
-    "name": "Drink 2L of water",
-    "color": "#3498db",
-    "isArchived": false,
-    "createdAt": "2026-08-01T00:00:00.000Z"
-  }
-}
-```
+Master of Information Technology (Distinction)  
+Melbourne, Australia
+
+- 💼 LinkedIn: [ADD LINK]
+- 🐙 GitHub: [ADD LINK]
+- 🌐 Live Application: [ADD RENDER LINK]
 
 ---
 
-#### PATCH /habits/:id
-Updates a habit. Accepts any combination of `name`, `color`, or `isArchived`.
-
-**Request body (archive example):**
-```json
-{
-  "isArchived": true
-}
-```
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit updated",
-  "data": {
-    "_id": "6a995262e0998a436c32c4b2",
-    "name": "Drink 2L of water",
-    "color": "#3498db",
-    "isArchived": true
-  }
-}
-```
-
----
-
-#### DELETE /habits/:id
-Permanently deletes a habit and all its completion records.
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit deleted"
-}
-```
-
----
-
-#### GET /habits/:id/history
-Returns completion dates for a specific habit for the last 90 days.
-Used by the frontend to populate the heatmap.
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit history",
-  "completions": [
-    "2026-08-01",
-    "2026-08-03",
-    "2026-08-04",
-    "2026-08-07"
-  ]
-}
-```
-
-Dates are returned as `"YYYY-MM-DD"` strings — the same format the heatmap uses for comparison.
-
----
-
-### Completion Routes
-
-#### POST /completions
-Marks a habit as completed for today. Stores `completedOn` as midnight UTC.
-Prevented from duplicate entries by the unique index on `{ habitId, completedOn }`.
-
-**Request body:**
-```json
-{
-  "habitId": "6a995262e0998a436c32c4b2"
-}
-```
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Habit completed",
-  "data": {
-    "_id": "6a9b6f9e0620fcae57735ed0",
-    "habitId": "6a995262e0998a436c32c4b2",
-    "completedOn": "2026-08-20T00:00:00.000Z"
-  }
-}
-```
-
----
-
-#### GET /completions
-Returns all completion records across all habits.
-
-**Response:**
-```json
-{
-  "status": "success",
-  "data": [
-    {
-      "_id": "6a9b6f9e0620fcae57735ed0",
-      "habitId": "6a995262e0998a436c32c4b2",
-      "completedOn": "2026-08-20T00:00:00.000Z"
-    }
-  ]
-}
-```
-
----
-
-#### DELETE /completions/:id
-Deletes a specific completion record by its `_id`.
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Completion deleted"
-}
-```
-
----
-
-## 🧪 Testing With Postman
-
-Recommended test sequence to verify all routes are working:
-
-```
-1.  POST   /api/v1/habits                     create a habit
-2.  POST   /api/v1/habits                     create a second habit
-3.  GET    /api/v1/habits                     both habits returned
-4.  POST   /api/v1/completions                mark first habit done today
-5.  GET    /api/v1/completions                completion record appears
-6.  GET    /api/v1/habits/:id/history         date string appears in array
-7.  PATCH  /api/v1/habits/:id                 { "isArchived": true }
-8.  GET    /api/v1/habits                     archived habit still returned
-9.  DELETE /api/v1/completions/:id            completion removed
-10. DELETE /api/v1/habits/:id                 habit deleted
-11. GET    /api/v1/habits                     habit no longer in list
-```
-
----
-
-## 🔒 CORS
-
-CORS is enabled for all origins by default using the `cors` middleware. To restrict to your frontend origin only, update `server.js`:
-
-```js
-app.use(cors({ origin: "http://localhost:5173" }))
-```
-
----
-
-## 🚧 Known Limitations
-
-- No authentication — single user only for MVP
-- All habits are returned on `GET /habits` including archived ones — filter by `isArchived` on the frontend
-- No pagination — suitable for personal use with a small number of habits
-
----
-
-## 🔮 Planned Features
-
-- JWT authentication for multi-user support
-- Streak calculation endpoint
-- Deployment to AWS Elastic Beanstalk or Azure App Service
-- MongoDB Atlas production cluster
+> Built to explore full-stack development, deployment, database relationships, and turning habit consistency into something visual.
