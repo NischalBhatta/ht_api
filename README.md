@@ -6,9 +6,9 @@ Track daily habits, visualise your consistency over the last 90 days, and build 
 
 ## 🚀 Live Project
 
-🌐 **Live Application:** [ADD YOUR RENDER LINK]
+🌐 **Live Application:** https://habit-tracker-9bof.onrender.com
 
-🎨 **Frontend Repository:** [ADD YOUR FRONTEND GITHUB LINK]
+🎨 **Frontend Repository:** https://github.com/NischalBhatta/ht_client
 
 🖥️ **Backend Repository:** You are here
 
@@ -271,7 +271,7 @@ The frontend is maintained separately.
 
 Clone it from:
 
-👉 [ADD FRONTEND REPOSITORY LINK]
+👉 [https://github.com/NischalBhatta/ht_client]
 
 Then:
 
@@ -377,9 +377,8 @@ If your feature affects both repositories, mention the related Pull Request in t
 Master of Information Technology (Distinction)  
 Melbourne, Australia
 
-- 💼 LinkedIn: [ADD LINK]
-- 🐙 GitHub: [ADD LINK]
-- 🌐 Live Application: [ADD RENDER LINK]
+- 💼 LinkedIn: https://www.linkedin.com/in/nischal-bhatta-3b861822b/
+- 🌐 Live Application: https://habit-tracker-9bof.onrender.com
 
 ---
 
