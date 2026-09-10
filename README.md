@@ -16,7 +16,7 @@ Track daily habits, visualise your consistency over the last 90 days, and build 
 
 ## 📸 Preview
 
-Add a screenshot of your application here:
+
 
 ![Habit Tracker Preview](./HabitTracker.png)
 
